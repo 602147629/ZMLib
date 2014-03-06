@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>PowerEngine1.1.0</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexlibnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] Away3DEngineLib-src</name>
+			<type>2</type>
+			<location>E:/Power/Away3DEngineLib/src</location>
+		</link>
+		<link>
+			<name>[source path] Feathers1.2.0-src</name>
+			<type>2</type>
+			<location>E:/Power/Feathers1.2.0/src</location>
+		</link>
+		<link>
+			<name>[source path] Starling1.4-src</name>
+			<type>2</type>
+			<location>E:/Power/Starling1.4/src</location>
+		</link>
+	</linkedResources>
+</projectDescription>
