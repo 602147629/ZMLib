@@ -48,7 +48,7 @@ package com.view
 		private function initData():void
 		{
 			if(admanageList == null){
-				admanageList = FarmDataBase.getAdmanageList();
+				admanageList = FarmDataBase.getVideoList();
 			}
 			//			var temp:Array = [];
 			//			for each (var avo:AdmanageVo in admanageList) 
@@ -66,11 +66,11 @@ package com.view
 			var avo:AdmanageVo = admanageList[sourceIndex];
 			source = avo.sourceUrl;
 			if(avo.mode == AdmanageVo.MODE_VIDEO){
-				playVideo(source);
+				playVideo("D:/vod/1.mp4");
 			}else{
 				playImage(source);
 			}
-			if(scrollText != null)scrollText.text = avo.content;
+			if(scrollText != null)scrollText.text = avo.title;
 		}
 		private var container:Sprite;
 		private var back:Quad;
@@ -200,7 +200,9 @@ package com.view
 		private var source:String;
 		public function playVideo(address:String = null):void{
 			trace(address);
-			CacheUtils.loadByteAndSave(address,FarmRemoteData.address,videoComplete,address);
+			showVideo();
+			_ns.play(address);
+//			CacheUtils.loadByteAndSave(address,FarmRemoteData.address,videoComplete,address);
 		}
 		
 		private function videoComplete(byte:ByteArray,address:String):void

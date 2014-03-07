@@ -1,9 +1,11 @@
 package com.manager
 {
+	import com.control.FreeCameraControl;
 	import com.engine.AwayEngine;
 	import com.greensock.TweenLite;
 	import com.utils.GraphicsUtil;
 	import com.utils.StarlingConvert;
+	import com.view.Merch3DView;
 	import com.vo.ImageVo;
 	
 	import flash.display.Bitmap;
@@ -821,21 +823,29 @@ package com.manager
 		private static function onStopEngine(e:starling.events.TouchEvent):void
 		{
 			var touch:Touch = e.getTouch(e.target as starling.display.DisplayObject);
-			if(touch != null && e.target != Vision.staringStage){
-				if(touch.phase == TouchPhase.BEGAN){
-					//					trace('触发触摸元件:' + touch);
-					AwayEngine.cameraEnabled = false;
-					stage.addEventListener(MouseEvent.MOUSE_UP,stageTouch,false,5,true);
-					stage.addEventListener(Event.MOUSE_LEAVE,stageTouch,false,5,true);
+			if(touch != null){
+				if(e.target == Vision.staringStage/* && touch.phase == TouchPhase.BEGAN*/){
+					FreeCameraControl.getInstance().open();
+					Merch3DView.getInstance().enabled = true;
+				}else{
+					if(touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.HOVER){
+						FreeCameraControl.getInstance().shield();
+						Merch3DView.getInstance().enabled = false;
+					}else if(touch.phase == TouchPhase.ENDED){
+						FreeCameraControl.getInstance().open();
+						Merch3DView.getInstance().enabled = true;
+					}
 				}
 			}
 		}
 		
 		private static function stageTouch(e:Event):void
 		{
-			AwayEngine.cameraEnabled = true;
+			//			AwayEngine.cameraEnabled = true;
+			FreeCameraControl.getInstance().open();
 			Vision.stage.removeEventListener(MouseEvent.MOUSE_UP,stageTouch);
 			Vision.stage.removeEventListener(Event.MOUSE_LEAVE,stageTouch);
+			e.stopImmediatePropagation();
 		}
 		
 	}

@@ -11,6 +11,7 @@ package com.model
 	import com.view.Merch3DView;
 	import com.view.StandMember;
 	import com.view.VideoWindow;
+	import com.vo.AdmanageVo;
 	import com.vo.CheckVo;
 	import com.vo.FoodStandVo;
 	
@@ -192,7 +193,33 @@ package com.model
 			{
 				if(admanageObj.checkinfo == "true" && !(admanageObj.delstate == "true")){
 					admanageObj.mode = admanageObj.admode;
-					admanageObj.sourceUrl = PhpNet.WWW_ROOT + IMAGE_FILE + admanageObj.picurl;
+					if(admanageObj.mode != AdmanageVo.MODE_VIDEO){//不是图片地址的不要紧
+						if(admanageObj.sourceUrl == ""){
+							admanageObj.sourceUrl = null;//没有图片
+						}else{
+							admanageObj.sourceUrl = PhpNet.WWW_ROOT + IMAGE_FILE + admanageObj.picurl;
+						}
+					}else{
+						var sList:Array = admanageObj.picurl.split("\\");
+						var tempUrl:String = sList.join("/");
+						admanageObj.sourceUrl = tempUrl;
+					}
+					admanageObj.stick = (admanageObj.push == "true");//置顶显示
+					admanageObj.delay = int(admanageObj.time_space) * 1000;
+					admanageObj.startTime = admanageObj.time_begin * 1000;
+					admanageObj.endTime = admanageObj.time_over * 1000;
+					admanageObj.adtext = admanageObj.adtext.replace("/o:p/gi","b");
+					try{
+						var xml:XML = XML("<root>" + admanageObj.adtext + "</root>");
+						//			xml.p[0].appendChild(":o");
+						var config:XML = checkXml(xml);
+						var result:String = xmlToString(xml);
+						result = result.replace("/&nbsp/gi","　");
+						result = result.replace("/宋体/gi","黑体");
+						admanageObj.content = result;
+					}catch(e:Error){
+						trace(admanageObj.title + " 内容错误:" + e);
+					}
 					admanageArr.push(admanageObj);
 				}
 			}

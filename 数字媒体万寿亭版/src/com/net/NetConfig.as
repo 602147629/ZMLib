@@ -14,7 +14,8 @@ package com.net
 		public static const MERCHANT_SHOW:String = SIGN + '.merchant_show';//商铺人员
 //		public static const FOOD_SHOW:String = SIGN + '.food_show';//菜价
 		public static const BIG_FOOD_SHOW:String = SIGN + '.bigfood_show';
-		public static const ADMANAGE_SHOW:String = SIGN + '.admanage_show';//头部显示的广告
+//		public static const ADMANAGE_SHOW:String = SIGN + '.admanage_show';//头部显示的广告
+		public static const ADMANAGE_SHOW:String = SIGN + '.admanage_standby_show';//头部显示的广告
 		public static const DETECTION_SHOW:String = SIGN + '.detection1_show';//农残检测
 //		public static const DETECTION_SHOW:String = SIGN + '.detection_show';//农残检测
 //		public static const TYPE_LIST:String = 'ProjectDB.getTypeList';

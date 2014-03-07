@@ -19,5 +19,5 @@
 	<!-- 1:桌面位置 2:我的文档 3:applicationDirectory 4:applicationStorageDirectory 5:用户目录userDirectory-->
 	<cache>2</cache>
 	<!-- 是否开启键盘控制3D摄像头1开启 0关闭 -->
-	<keyboard>1</keyboard>
+	<keyboard>0</keyboard>
 </root>

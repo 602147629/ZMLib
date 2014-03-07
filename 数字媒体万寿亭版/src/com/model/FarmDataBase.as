@@ -52,7 +52,7 @@ package com.model
 		
 		public static const DATA_VIP:String = "0";//会员服务
 		
-		public static const DATA_ADMANAGE:String = "DATA_ADMANAGE";//广告
+		public static const DATA_VIDEO:String = "DATA_ADMANAGE";//广告
 		
 		public static const DATA_WAIT:String = "4";//会员登陆系统更新中
 		
@@ -390,9 +390,9 @@ package com.model
 				case DATA_VIP:
 					return getVipList();
 					break;
-				case DATA_ADMANAGE:
-					return getAdmanageList();
-					break;
+//				case DATA_VIDEO:
+//					return getVideoList();
+//					break;
 			}
 			return null;
 		}
@@ -432,25 +432,57 @@ package com.model
 			}
 		}
 		
-		private static var admanageList:Vector.<AdmanageVo>;
-		public static function getAdmanageList():Vector.<AdmanageVo>
-		{
-			if(admanageList == null){
-				createAdmanageList();
+		private static var standList:Vector.<AdmanageVo>;
+		public static function getStandList():Vector.<AdmanageVo>{
+			if(standList == null){
+				createStandList();
 			}
-			return admanageList;
+			return standList;
 		}
 		
-		private static function createAdmanageList():void
+		private static function createStandList():void
 		{
-			admanageList = new Vector.<AdmanageVo>();
+			standList = new Vector.<AdmanageVo>();
 			for each (var adObj:Object in _tempAdmanageData) 
 			{
-				var avo:AdmanageVo = new AdmanageVo();
-				avo.id = adObj.id;
-				avo.mode = adObj.mode;
-				avo.sourceUrl = adObj.sourceUrl;
-				admanageList.push(avo);
+				if(adObj.mode != AdmanageVo.MODE_VIDEO){
+					var avo:AdmanageVo = new AdmanageVo();
+					avo.id = adObj.id;
+					avo.mode = adObj.mode;
+					avo.sourceUrl = adObj.sourceUrl;
+					avo.title = adObj.title;
+					avo.content = adObj.content;
+					avo.stick = adObj.stick;
+					avo.delay = adObj.delay;
+					avo.startTime = adObj.startTime;
+					avo.endTime = adObj.endTime;
+					standList.push(avo);
+				}
+			}
+		}
+		
+		private static var videoList:Vector.<AdmanageVo>;
+		public static function getVideoList():Vector.<AdmanageVo>
+		{
+			if(videoList == null){
+				createVideoList();
+			}
+			return videoList;
+		}
+		
+		private static function createVideoList():void
+		{
+			videoList = new Vector.<AdmanageVo>();
+			for each (var adObj:Object in _tempAdmanageData) 
+			{
+				if(adObj.mode == AdmanageVo.MODE_VIDEO){
+					var avo:AdmanageVo = new AdmanageVo();
+					avo.id = adObj.id;
+					avo.mode = adObj.mode;
+					avo.sourceUrl = adObj.sourceUrl;
+					avo.title = adObj.title;
+					videoList.push(avo);
+				}
 			}
 		}
 		

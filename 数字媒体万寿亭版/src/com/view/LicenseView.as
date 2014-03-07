@@ -49,7 +49,7 @@ package com.view
 				var back:Quad = new Quad(1035 * Vision.widthScale,770 * Vision.heightScale,0xCCCCCC);
 				container.addChild(back);
 				back.x = (Vision.senceWidth - back.width) / 2;
-				back.y = (Vision.admanageHeight + 40) * Vision.heightScale;
+				back.y = (Vision.admanageHeight + Vision.farmMenuHeight + 40) * Vision.heightScale;
 				
 				var w:Number = 1000;
 				var h:Number = 685;
