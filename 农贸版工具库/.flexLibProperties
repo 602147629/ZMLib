@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="false" useMultiPlatformConfig="false" version="3">
   <includeClasses>
+    <classEntry path="com.component.AutoScrollContainer"/>
+    <classEntry path="com.component.ImageFadeWindow"/>
+    <classEntry path="com.control.GamePad"/>
+    <classEntry path="com.event.DateChangeEvent"/>
+    <classEntry path="com.event.PadEvent"/>
+    <classEntry path="com.layout.Layout"/>
+    <classEntry path="com.manager.DateManager"/>
+    <classEntry path="com.manager.TimerManager"/>
+    <classEntry path="com.manager.Vision"/>
+    <classEntry path="com.net.Share"/>
+    <classEntry path="com.rendener.BasicItemRenderer"/>
     <classEntry path="com.utils.CacheUtils"/>
     <classEntry path="com.utils.FarmLoader"/>
     <classEntry path="com.utils.FileUtils"/>
     <classEntry path="com.utils.KeyBoardUtil"/>
+    <classEntry path="com.utils.SpriteClip"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
