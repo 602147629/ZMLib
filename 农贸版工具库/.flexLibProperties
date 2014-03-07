@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="false" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="com.utils.CacheUtils"/>
+    <classEntry path="com.utils.FarmLoader"/>
+    <classEntry path="com.utils.FileUtils"/>
+    <classEntry path="com.utils.KeyBoardUtil"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>
