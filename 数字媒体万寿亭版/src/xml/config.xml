@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- stand待机 id:[1,2,3,4,5,6] 1:工作人员 2:政府 3:市场 4:商铺 5:农残检测 6:追溯 -->
+	<stand>5</stand>
+	<!-- 分屏数据显示 A、B分屏 0不需要分 -->
+	<screen>0</screen>
+	<!-- 市场色  normalColor = "0x84bbce" selectColor = "0x50B5E0" -->
+	<color normalColor = "0x84bbce" selectColor = "0x50B5E0" />
+	<!-- 政府色  normalColor = "0xd89c9c" selectColor = "0xe05757" -->
+<!-- 	<color normalColor = "0xd89c9c" selectColor = "0xe05757" /> -->
+	<php address="http://192.168.1.171/" path="amf/gateway.php" />
+	<!-- AMFPHP2.1 path="amfphp-2.1.1/Amfphp/" -->
+<!-- 	<php address="http://localhost/" path="amfphp-2.1.1/Amfphp/" /> -->
+	<beta>0</beta>
+	<!-- 是否读取本地农残1表示数据库 0表示本地 -->
+	<detection>1</detection>
+	<!-- 是否播放视频 0不播放 1播放videoTV 2播放原生video-->
+	<video>1</video>
+	<!-- 1:桌面位置 2:我的文档 3:applicationDirectory 4:applicationStorageDirectory 5:用户目录userDirectory-->
+	<cache>2</cache>
+	<!-- 是否开启键盘控制3D摄像头1开启 0关闭 -->
+	<keyboard>1</keyboard>
+</root>

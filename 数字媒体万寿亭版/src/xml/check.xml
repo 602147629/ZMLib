@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<!-- personName:检测人 time:时间戳(php)  result:检测结果 -->
+	<data personName="孙薛琴 刘培娥" time="1389196800" result="" />
+	<!-- merchId:摊位  merchName:商户姓名  foodName:商品名称  origin:产地  count:检测数量  result:检测结果->合格:1 不合格:0-->
+	<props>
+		<prop merchId="74"  merchName="涂细旺"  foodName="菠菜"  origin="良褚" 
+			count="18" result="1" />
+		<prop merchId="86"  merchName="梅玉财"  foodName="黄瓜"  origin="良褚" 
+			count="20" result="1" />
+		<prop merchId="84"  merchName="王祥汉"  foodName="西红柿"  origin="良褚" 
+			count="18" result="1" />
+		<prop merchId="76"  merchName="华张根"  foodName="四季豆"  origin="良褚" 
+			count="20" result="1" />
+		<prop merchId="88"  merchName="李张林"  foodName="茭白"  origin="萧山" 
+			count="16" result="1" />
+		<prop merchId="88"  merchName="李张林"  foodName="包心菜"  origin="萧山" 
+			count="10" result="1" />
+		<prop merchId="70"  merchName="陆冬芳"  foodName="芹菜"  origin="萧山" 
+			count="15" result="1" />
+		<prop merchId="90"  merchName="陶善良"  foodName="洋葱"  origin="下沙" 
+			count="16" result="1" />
+		<prop merchId="91"  merchName="李胜荣"  foodName="玉米"  origin="富阳" 
+			count="15" result="1" />
+		<prop merchId="91"  merchName="李胜荣"  foodName="青菜"  origin="富阳" 
+			count="20" result="1" />
+		<prop merchId="83"  merchName="吕冬水"  foodName="生菜"  origin="良褚" 
+			count="15" result="1" />
+		<prop merchId="74"  merchName="涂细旺"  foodName="四季豆"  origin="良褚" 
+			count="18" result="1" />
+		<prop merchId="10"  merchName="方惠通"  foodName="黄鱼"  origin="萧山" 
+			count="15" result="1" />
+		<prop merchId="08"  merchName="方佩君"  foodName="带鱼"  origin="萧山" 
+			count="18" result="1" />
+		<prop merchId="61"  merchName="孙万国"  foodName="年糕"  origin="自产" 
+			count="40" result="1" />
+		<prop merchId="61"  merchName="孙万国"  foodName="潮面"  origin="自产" 
+			count="18" result="1" />
+		<prop merchId="59"  merchName="陈创增"  foodName="香肠"  origin="唯心" 
+			count="15" result="1" />
+		<prop merchId="59"  merchName="陈创增"  foodName="咸肉"  origin="近江" 
+			count="50" result="1" />
+		<prop merchId="44"  merchName="张静彬"  foodName="牛肉"  origin="富阳" 
+			count="35" result="1" />
+		<prop merchId="67"  merchName="李笑丽"  foodName="贡丸"  origin="唯心" 
+			count="15" result="1" />
+		<prop merchId="67"  merchName="李孝利"  foodName="测试"  origin="测试" 
+			count="15" result="1" />
+		<prop merchId="67"  merchName="李笑丽"  foodName="贡丸"  origin="唯心" 
+			count="15" result="1" />
+		<prop merchId="67"  merchName="李孝利"  foodName="测试"  origin="测试" 
+			count="15" result="1" />
+	</props>
+</root>
