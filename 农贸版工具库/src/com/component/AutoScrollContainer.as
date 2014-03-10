@@ -18,8 +18,8 @@ package com.component
 		private var markRect:Bitmap;
 		public function AutoScrollContainer(w:Number,h:Number){
 			super();
-			//			this.width = actualWidth = w;
-			//			this.height = actualHeight = h;//交互区域大小
+			actualWidth = w;
+			actualHeight = h;//交互区域大小
 			markRect = new Bitmap(new BitmapData(1,1));
 			markRect.width = w;
 			markRect.height = h;
