@@ -264,16 +264,17 @@ package com.component
 		 */		
 		private function moveHorizontalRendener():void
 		{
+			var tCount:int = _columns + _offCount;
 			for (var i:int = 0; i < this.numChildren; i++) 
 			{
 				var item:BasicItemRenderer = getChildAt(i) as BasicItemRenderer;
 				item.x -= _scrollSpeed;//开始移动
 				if(item.x < -item.width + 1){
-					var tCount:int = _columns + _offCount;
 					item.x += (item.width + _hGap) * tCount;
 					//放到最后
-					var targetIndex:int = item.index + tCount * _rows;
+					var targetIndex:int = item.place + tCount * _rows;
 					var place:int = getDataPlace(targetIndex);
+					item.place = place;
 					item.index += tCount * _rows;//自身索引值
 					item.data = _dataProvider[place];//替换数据
 				}
@@ -284,16 +285,17 @@ package com.component
 		 */		
 		private function moveVerticalRendener():void
 		{
+			var tCount:int = _rows + _offCount;
 			for (var i:int = 0; i < this.numChildren; i++) 
 			{
 				var item:BasicItemRenderer = getChildAt(i) as BasicItemRenderer;
 				item.y -= _scrollSpeed;//开始移动
 				if(item.y < -item.height + 1){
-					var tCount:int = _rows + _offCount;
 					item.y += (item.height + _vGap) * tCount;
 					//放到最后
-					var targetIndex:int = item.index + tCount * _columns;
+					var targetIndex:int = item.place + tCount * _columns;
 					var place:int = getDataPlace(targetIndex);
+					item.place = place;
 					item.index += tCount * _columns;//自身索引值
 					item.data = _dataProvider[place];//替换数据
 				}

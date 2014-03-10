@@ -16,9 +16,11 @@ package com.manager
 		
 		private static function onLoop(e:Event):void
 		{
-			var de:DateChangeEvent = new DateChangeEvent(DateChangeEvent.DATE_CHANGE);
-			de.date = new Date();
-			dateDispatcher.dispatchEvent(de);
+			if(dateDispatcher.hasEventListener(DateChangeEvent.DATE_CHANGE)){
+				var de:DateChangeEvent = new DateChangeEvent(DateChangeEvent.DATE_CHANGE);
+				de.date = new Date();
+				dateDispatcher.dispatchEvent(de);
+			}
 		}
 	}
 }
