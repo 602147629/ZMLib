@@ -2,6 +2,7 @@
 <flexLibProperties includeAllClasses="false" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.component.AutoScrollContainer"/>
+    <classEntry path="com.component.AutoSlideContainer"/>
     <classEntry path="com.component.ImageFadeWindow"/>
     <classEntry path="com.control.GamePad"/>
     <classEntry path="com.event.DateChangeEvent"/>
