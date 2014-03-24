@@ -1,5 +1,15 @@
 package com.engine
 {
+	import com.greensock.TweenLite;
+	
+	import flash.display.Stage;
+	import flash.display.StageAlign;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.geom.Vector3D;
+	import flash.utils.Dictionary;
+	
 	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
@@ -11,26 +21,18 @@ package com.engine
 	import away3d.materials.ColorMaterial;
 	import away3d.materials.lightpickers.StaticLightPicker;
 	import away3d.textures.PlanarReflectionTexture;
-	
-	import com.greensock.TweenLite;
-	
-	import flash.display.Stage;
-	import flash.display.StageAlign;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
 
 	public class AwayEngine
 	{
 		private static var colorDic:Dictionary = new Dictionary(true);
-		public static function getColorMaterial(color:uint):ColorMaterial{
+		public static function getColorMaterial(color:uint,showLight:Boolean = true):ColorMaterial{
 			if(colorDic[color] == null){
 				var c:ColorMaterial = new ColorMaterial(color);
 //				c.smooth = true;
 				colorDic[color] = c;
 			}
+			c = colorDic[color];
+			c.lightPicker = showLight ? AwayEngine.lightPicker : null;
 			return colorDic[color];
 		}
 		private static var reflect:PlanarReflectionTexture;
