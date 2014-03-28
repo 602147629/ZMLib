@@ -1,14 +1,5 @@
 package com.utils
 {
-	import away3d.containers.ObjectContainer3D;
-	import away3d.entities.Mesh;
-	import away3d.events.AssetEvent;
-	import away3d.events.LoaderEvent;
-	import away3d.library.assets.AssetType;
-	import away3d.loaders.Loader3D;
-	import away3d.loaders.misc.AssetLoaderContext;
-	import away3d.loaders.parsers.Parsers;
-	
 	import com.engine.AwayEngine;
 	
 	import flash.display.Loader;
@@ -24,6 +15,15 @@ package com.utils
 	import flash.utils.Dictionary;
 	import flash.utils.setTimeout;
 	
+	import away3d.containers.ObjectContainer3D;
+	import away3d.entities.Mesh;
+	import away3d.events.AssetEvent;
+	import away3d.events.LoaderEvent;
+	import away3d.library.assets.AssetType;
+	import away3d.loaders.Loader3D;
+	import away3d.loaders.misc.AssetLoaderContext;
+	import away3d.loaders.parsers.Parsers;
+	
 	public class PowerLoader
 	{
 		public static var cutAddress:String = '';//剪切的文本
@@ -35,11 +35,26 @@ package com.utils
 			}
 			initFile(url,loadFunc,args);
 		}
+		
+		private static var eventDic:Dictionary = new Dictionary(true);
 		public static function loadFileWithEvent(url:String,loadFunc:Function = null,
 												 eventType:String = null,...args):void{
 //			trace("加载图片:" + url);
+//			eventDic[url] = eventType;
+			pushEvent(eventType,url);
 			initFile(url,loadFunc,args,eventType);
 		}
+		
+		private static function pushEvent(eventType:String,url:String):void{
+			if(eventType != null && url != ''){
+				var eList:Vector.<String> = eventDic[eventType];
+				if(eList == null){
+					eList = eventDic[eventType] = new Vector.<String>();
+				}
+				eList.push(url);
+			}
+		}
+		
 		/**
 		 * 将二进制数据转换成视图
 		 */		
@@ -53,9 +68,9 @@ package com.utils
 		{
 			var data:Object = getFile(byte);
 			if(data != null){
-				loadComplete(data,loadFunc,args);
+				loadComplete(data,byte,loadFunc,args);
 			}else{
-				loadImage2(byte,loadFunc,args);
+				loadImageByte(byte,byte,loadFunc,args);
 				loadProgress();
 			}
 		}
@@ -65,7 +80,7 @@ package com.utils
 		 * @param loadFunc
 		 * @param args
 		 */		
-		private static function loadImage2(byte:ByteArray,loadFunc:Function,args:Array,eventType:String = null):void
+		private static function loadImageByte(byte:ByteArray,url:Object,loadFunc:Function,args:Array,eventType:String = null):void
 		{
 			if(urlDic[byte] !== undefined){
 				loader = urlDic[byte];
@@ -76,7 +91,7 @@ package com.utils
 				//				loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,onAssetsProgress);
 				loader.loadBytes(byte);
 			}
-			pushLoader(loader,byte,loadFunc,args,eventType);
+			pushLoader(loader,url,loadFunc,args,byte,eventType);
 		}
 		
 		
@@ -90,7 +105,7 @@ package com.utils
 									   loadFunc:Function = null,...args):void{
 			var data:Object = getFile(urlRequest.url);
 			if(data != null){
-				loadComplete(data,loadFunc,args);
+				loadComplete(data,urlRequest.url,loadFunc,args);
 			}else{
 				var url:String = urlRequest.url;
 				if(urlDic[url] !== undefined){
@@ -115,7 +130,7 @@ package com.utils
 		public static function loadByte(url:String,loadFunc:Function = null,...args):void{
 			var data:Object = getFile(url);
 			if(data != null){
-				loadComplete(data,loadFunc,args);
+				loadComplete(data,url,loadFunc,args);
 			}else{
 				loadData(url,loadFunc,args,true);
 			}
@@ -127,9 +142,9 @@ package com.utils
 			var data:Object = getFile(url);
 			if(data != null){
 				if(eventType != null){
-					setTimeout(loadComplete,50,data,loadFunc,args,eventType);
+					setTimeout(loadComplete,50,data,url,loadFunc,args,eventType);
 				}else{
-					loadComplete(data,loadFunc,args,eventType);
+					loadComplete(data,url,loadFunc,args,eventType);
 				}
 			}else{
 				checkFile(url,loadFunc,args,eventType);
@@ -147,7 +162,7 @@ package com.utils
 			var tempUrl:String = url.toLocaleLowerCase();
 			if(tempUrl.lastIndexOf('.png') > 0 || tempUrl.lastIndexOf('.jpg') > 0 || 
 				tempUrl.lastIndexOf('.gif') > 0){//加载材质数据
-				CacheUtils.loadByteAndSave(url,cutAddress,loadImage2,loadFunc,args,eventType);
+				CacheUtils.loadByteAndSave(url,cutAddress,loadImageByte,url,loadFunc,args,eventType);
 //				loadImage(url,loadFunc,args,eventType);
 			}else if(tempUrl.lastIndexOf('.mtl') > 0)
 			{
@@ -261,7 +276,7 @@ package com.utils
 				//				loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS,onAssetsProgress);
 				loader.load(new URLRequest(url));
 			}
-			pushLoader(loader,url,loadFunc,args,eventType);
+			pushLoader(loader,url,loadFunc,args,null,eventType);
 		}
 		/**
 		 *加载车型贴图配置文件 
@@ -365,7 +380,7 @@ package com.utils
 										   loadFunc:Function = null,...args):void{
 			var data:Object = getFile(asset);
 			if(data != null){
-				loadComplete(data,loadFunc,args);
+				loadComplete(data,asset,loadFunc,args);
 			}else{
 				loadModel(asset,loadFunc,args);
 			}
@@ -440,6 +455,7 @@ package com.utils
 			var url:Object = loadVector[0].url;
 			delete loadDic[loader];
 			delete urlDic[url];
+//			delete eventDic[url];
 			loader = null;
 			loadVector.length = 0;
 			loadVector = null;
@@ -452,14 +468,15 @@ package com.utils
 			
 			delete loadDic[loader];
 			delete urlDic[url];
+//			delete eventDic[url];
 			loader = null;
 			for each (var lvo:LoadVo in loadVector) 
 			{
-				loadComplete(asset,lvo.loadFunc,lvo.args,lvo.eventType);
+				loadComplete(asset,lvo.url,lvo.loadFunc,lvo.args,lvo.eventType);
 			}
-			if(lvo != null && lvo.eventType != null){
-				checkEventType(lvo.eventType);
-			}
+//			if(lvo != null && lvo.eventType != null){
+//				checkEventType(lvo.eventType);
+//			}
 			loadVector.length = 0;
 			loadVector = null;
 		}
@@ -467,16 +484,22 @@ package com.utils
 		private static function checkEventType(eventType:String):void
 		{
 			if(loadDispatcher.hasEventListener(eventType)){
-				for each (var loadVector:Vector.<LoadVo> in loadDic) 
-				{
-					for each (var lvo:LoadVo in loadVector) 
-					{
-						if(lvo.eventType == eventType){
-							return;//说明还有 返回
-						}
-					}
+				var eList:Vector.<String> = eventDic[eventType];
+				if(eList != null && eList.length == 0){//说明已经全部加载完毕
+					trace("事件: " + eventType + " 全部加载完毕");
+					loadDispatcher.dispatchEvent(new Event(eventType));
 				}
-				loadDispatcher.dispatchEvent(new Event(eventType));
+//				for each (var loadVector:Vector.<LoadVo> in loadDic) 
+//				{
+//					for each (var lvo:LoadVo in loadVector) 
+//					{
+//						if(lvo.eventType == eventType){
+//							return;//说明还有 返回
+//						}
+//					}
+//				}
+//				trace("事件: " + eventType + " 全部加载完毕");
+//				loadDispatcher.dispatchEvent(new Event(eventType));
 			}
 		}
 		/**
@@ -484,18 +507,17 @@ package com.utils
 		 * @param loader
 		 */		
 		private static function pushLoader(loader:Object,
-										   url:Object, loadFunc:Function, args:Array,
-										   eventType:String = null):void
+										   url:Object,loadFunc:Function, args:Array,byte:ByteArray = null,eventType:String = null):void
 		{
 			var loadVector:Vector.<LoadVo> = loadDic[loader];
 			if(loadVector == null){
 				loadVector = loadDic[loader] = new Vector.<LoadVo>();
 			}
-			loadVector.push(new LoadVo(url,loadFunc,args,eventType));
+			loadVector.push(new LoadVo(url,loadFunc,args,byte,eventType));
 			urlDic[url] = loader;
 		}
 		
-		private static function loadComplete(data:Object,loadFunc:Function, args:Array,
+		private static function loadComplete(data:Object,url:Object,loadFunc:Function, args:Array,
 											 eventType:String = null):void
 		{
 			if(args != null){ //如果传入第三个参数
@@ -505,7 +527,20 @@ package com.utils
 				loadFunc(data);
 			}
 			if(eventType != null){
+				popEvent(eventType,url as String);
+				trace("事件: " + eventType + " 数据: " + data);
 				checkEventType(eventType);
+			}
+		}
+		
+		private static function popEvent(eventType:String, url:String):void
+		{
+			var eList:Vector.<String> = eventDic[eventType];
+			if(eList != null){
+				var index:int = eList.indexOf(url);
+				if(index >= 0){
+					eList.splice(index,1);
+				}
 			}
 		}
 		
@@ -516,6 +551,7 @@ package com.utils
 		}
 	}
 }
+import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 class ResourceBox
@@ -559,14 +595,17 @@ class ResourceBox
 }
 class LoadVo
 {
-	public function LoadVo(url:Object, loadFunc:Function, args:Array,eventType:String = null):void{
+	public function LoadVo(url:Object, loadFunc:Function, args:Array,byte:ByteArray = null,
+						   eventType:String = null):void{
 		this.url = url;
 		this.loadFunc = loadFunc;
 		this.args = args;
+		this.byte = byte;
 		this.eventType = eventType;
 	}
 	public var url:Object;
 	public var loadFunc:Function;
 	public var args:Array;
 	public var eventType:String;
+	public var byte:ByteArray;
 }
