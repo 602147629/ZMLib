@@ -124,7 +124,7 @@ package starling.text
         private static var sNativeTextField:flash.text.TextField = new flash.text.TextField();
         
         /** Create a new text field with the given properties. */
-        public function TextField(width:int, height:int, text:String, fontName:String="Verdana",
+        public function TextField(width:int, height:int, text:String, fontName:String="",
                                   fontSize:Number=12, color:uint=0x0, bold:Boolean=false)
         {
             mText = text ? text : "";
@@ -141,6 +141,10 @@ package starling.text
             mHitArea = new Quad(width, height);
             mHitArea.alpha = 0.0;
             addChild(mHitArea);
+			
+			if(_registerName != ""){
+				_embedFonts = true;//直接嵌入
+			}
             
             addEventListener(Event.FLATTEN, onFlatten);
         }
@@ -179,6 +183,17 @@ package starling.text
                 mRequiresRedraw = false;
             }
         }
+		
+		private var _embedFonts:Boolean;
+		public function get embedFonts():Boolean
+		{
+			return _embedFonts;
+		}
+
+		public function set embedFonts(value:Boolean):void
+		{
+			_embedFonts = value;
+		}
 		
 		private var _autoSizeHeight:Boolean;//自动平衡比例
 		public function get autoSizeHeight():Boolean
@@ -309,19 +324,20 @@ package starling.text
                 vAlign = VAlign.TOP;
             }
             
-			if(_registerName != ""){
-				sNativeTextField.embedFonts = true;
-				var fontFamily:String = _registerName;
-				if(mBold && _registerBoldName != ""){
-					fontFamily = _registerBoldName;
-				}
-				//				if((mFontName == null || mFontName == "Verdana")){
-				//					mFontName = registerName;
-				//				}
+			if(mFontName != ""){
+				var fontFamily:String = mFontName;
 			}else{
-				sNativeTextField.embedFonts = false;
-				fontFamily = mFontName;
+				if(_registerName != ""){
+					fontFamily = _registerName;
+					if(mBold && _registerBoldName != ""){
+						fontFamily = _registerBoldName;
+					}
+				}else{
+					fontFamily = mFontName;
+				}
 			}
+			sNativeTextField.embedFonts = _embedFonts;
+			
 			var textFormat:TextFormat = new TextFormat(fontFamily, 
 				mFontSize * scale, mColor, mBold, mItalic, mUnderline, null, null, mHAlign);
 			textFormat.kerning = mKerning;
