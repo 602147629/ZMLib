@@ -238,6 +238,7 @@ package com.utils
 			var loaderCount:int;
 			for each (var loader:Object in urlDic) 
 			{
+				if(loader is Loader3D)continue;
 				if(loader is Loader){
 					bytesLoaded += (loader as Loader).contentLoaderInfo.bytesLoaded;
 					bytesTotal += (loader as Loader).contentLoaderInfo.bytesTotal;

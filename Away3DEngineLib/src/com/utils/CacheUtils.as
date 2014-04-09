@@ -3,19 +3,17 @@ package com.utils
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
-	import flash.filesystem.File;
+//	import flash.filesystem.File;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
-	
-	import mx.utils.StringUtil;
 
 	public class CacheUtils
 	{
-		public static var fileSavePath:File = File.documentsDirectory;
-		
+		public static var fileSavePath:Object;//File = File.documentsDirectory;
+		public static var fileUtilsClass:Object;
 		/**
 		 * 只会以二进制方式加载获取二进制数据 并保存到本地我的文档目录中缓存
 		 * @param url
@@ -137,10 +135,11 @@ package com.utils
 			if(byteDic[url] !== undefined)return byteDic[url];
 			if(url.indexOf(cutAddress) >= 0){//名字中存在ip地址
 				var filePath:String = url.slice(cutAddress.length);
-				
-				var byte:ByteArray = FileUtils.loadFile(fileSavePath,filePath);//从本地进行二次读取
-				if(byte != null){
-					saveFile(url,cutAddress,byte,false);//无需存入本地
+				if(fileUtilsClass != null && fileSavePath != null){
+					var byte:ByteArray = fileUtilsClass.loadFile(fileSavePath,filePath);//从本地进行二次读取
+					if(byte != null){
+						saveFile(url,cutAddress,byte,false);//无需存入本地
+					}
 				}
 			}
 			return byte;
@@ -150,8 +149,10 @@ package com.utils
 			byteDic[url] = byte;
 			if(isWrite){
 				if(url.indexOf(cutAddress) >= 0){//名字中存在ip地址
-					var filePath:String = url.slice(cutAddress.length);//确定写入
-					FileUtils.saveFile(byte,fileSavePath,filePath);
+					if(fileUtilsClass != null && fileSavePath != null){
+						var filePath:String = url.slice(cutAddress.length);//确定写入
+						fileUtilsClass.saveFile(byte,fileSavePath,filePath);
+					}
 				}
 			}
 		}
