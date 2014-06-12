@@ -1,15 +1,5 @@
 package com.engine
 {
-	import com.greensock.TweenLite;
-	
-	import flash.display.Stage;
-	import flash.display.StageAlign;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
-	
 	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
@@ -21,6 +11,18 @@ package com.engine
 	import away3d.materials.ColorMaterial;
 	import away3d.materials.lightpickers.StaticLightPicker;
 	import away3d.textures.PlanarReflectionTexture;
+	
+	import com.greensock.TweenLite;
+	import com.utils.MathLine;
+	import com.utils.MathVector;
+	
+	import flash.display.Stage;
+	import flash.display.StageAlign;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
+	import flash.geom.Vector3D;
+	import flash.utils.Dictionary;
 
 	public class AwayEngine
 	{
@@ -423,35 +425,153 @@ package com.engine
 			nativeStage.addEventListener(MouseEvent.CLICK,handler);
 		}
 		
-		public static function createSubGeom(pList:Vector.<Point>,height:Number = 50):SubGeometry{
+		public static function createSubGeom(ptList:Vector.<Point>,height:Number = 50):SubGeometry{
 			var subGeom : SubGeometry = new SubGeometry();
 			//			new SphereGeometry
 			var vertex : Vector.<Number> = new Vector.<Number>();
 			var indices : Vector.<uint> = new Vector.<uint>();
 			
-			var v1:Vector.<Vector3D> = new Vector.<Vector3D>();
-			var v2:Vector.<Vector3D> = new Vector.<Vector3D>();
-			for each (var p:Point in pList) 
-			{
-				v1.push(new Vector3D(p.x,0,-p.y));
-				v2.push(new Vector3D(p.x,height,-p.y));
-			}
+			var pList2D:Vector.<Vector.<Point>> = divideShape(ptList);
 			var count:int = 0;
-			count = createMatrix(v1,vertex,indices,count);
-			for (var i:int = v1.length - 1; i >= 0; i--) 
+			for each (var pList:Vector.<Point> in pList2D) 
 			{
-				if(i == 0){
-					var j:int = v1.length - 1;
-				}else{
-					j = i - 1;
+				var v1:Vector.<Vector3D> = new Vector.<Vector3D>();
+				var v2:Vector.<Vector3D> = new Vector.<Vector3D>();
+				for (var k:int = pList.length - 1; k >= 0; k--) 
+				{
+					var p:Point = pList[k];
+					v1.push(new Vector3D(p.x,0,-p.y));
+					v2.push(new Vector3D(p.x,height,-p.y));
 				}
-				count = createMatrix(new <Vector3D>[v1[i],v1[j],v2[j],v2[i]],vertex,indices,count);
+//				for each (var p:Point in pList) 
+//				{
+//					v1.push(new Vector3D(p.x,0,-p.y));
+//					v2.push(new Vector3D(p.x,height,-p.y));
+//				}
+//				v1.reverse();
+//				v2.reverse();
+				count = createMatrix(v1,vertex,indices,count);
+				for (var i:int = v1.length - 1; i >= 0; i--) 
+				{
+					if(i == 0){
+						var j:int = v1.length - 1;
+					}else{
+						j = i - 1;
+					}
+					count = createMatrix(new <Vector3D>[v1[i],v1[j],v2[j],v2[i]],vertex,indices,count);
+//					count = createMatrix(new <Vector3D>[v2[i],v2[j],v1[j],v1[i]],vertex,indices,count);
+				}
+				v2.reverse();
+				count = createMatrix(v2,vertex,indices,count);
 			}
-			v2.reverse();
-			count = createMatrix(v2,vertex,indices,count);
 			subGeom.updateVertexData(vertex);
 			subGeom.updateIndexData(indices);
 			return subGeom;
+		}
+		
+		/**
+		 * 开始划分图形
+		 */		
+		private static function divideShape(pList:Vector.<Point>,
+											pList2D:Vector.<Vector.<Point>> = null):Vector.<Vector.<Point>>{
+			if(pList2D == null){
+				pList2D = new Vector.<Vector.<Point>>();
+			}
+			var count:int = pList.length;
+			for (var i:int = 0; i < count; i++) 
+			{
+				var p:Point = pList[i];
+				if(i == 0){//第一个
+					var pv:MathVector = MathVector.createByPoint(pList[count - 1],pList[0]);
+					var nv:MathVector = MathVector.createByPoint(pList[0],pList[1]);
+				}else if(i == count - 1){//最后一个
+					pv = MathVector.createByPoint(pList[i - 1],pList[i]);
+					nv = MathVector.createByPoint(pList[i],pList[0]);//首点
+				}else{//中间的
+					pv = MathVector.createByPoint(pList[i - 1],pList[i]);
+					nv = MathVector.createByPoint(pList[i],pList[i + 1]);//首点
+				}
+				if(pv.getProduct(nv) > 0){//说明是凹点 注:数学坐标系 < 0表示凹点 flash坐标系y轴是反向的
+					var mv:MathVector = getCrossVector(pv,pList);
+//					if(mv == null)return pList2D;
+					//获取两条直线的交点
+					var pl:MathLine = pv.getMathLine();
+					var ml:MathLine = mv.getMathLine();
+					var cPoint:Point = pl.getLineCrossPoint(ml);
+					
+//					createCircle(cPoint.x,cPoint.y,5,0x00FFFF);
+//					this.graphics.lineStyle(1,0xcccccc);
+//					this.graphics.moveTo(p.x,p.y);
+//					this.graphics.lineTo(cPoint.x,cPoint.y);
+					
+					//交点 根据交点位置继续分割成两个多边形
+					var preList:Vector.<Point> = new Vector.<Point>();
+					preList.push(p);//首点
+					var index:int = getNextIndex(count,i);
+					while(true){
+						var tp:Point = pList[index];
+						preList.push(tp);
+						if(tp.equals(mv.startPoint)){//说明已经到头了
+							preList.push(cPoint);//最后存入中点
+							break;
+						}
+						index = getNextIndex(count,index);
+					}
+					var nowList:Vector.<Point> = new Vector.<Point>();
+					nowList.push(cPoint);//先存入中点
+					index = getNextIndex(count,index);
+					while(true){
+						tp = pList[index];
+						if(tp.equals(p)){//说明已经到头了 重新循环到了首点
+							//							nowList.push(cPoint);//最后存入中点 代替首点
+							break;
+						}else{
+							nowList.push(tp);
+						}
+						index = getNextIndex(count,index);
+					}
+					divideShape(preList,pList2D);//重新分离两个多边形
+					divideShape(nowList,pList2D);
+					return pList2D;
+				}
+			}
+			pList2D.push(pList);
+			//说明是凸多边形
+//			createMatrix(pList);
+			return pList2D;
+		}
+		
+		private static function getNextIndex(count:int,index:int):int{
+			if(++ index > count - 1){
+				index = 0;
+			}
+			return index;
+		}
+		/**
+		 * 有交集的向量
+		 * @return 
+		 */		
+		private static function getCrossVector(pv:MathVector,pList:Vector.<Point>):MathVector{
+			var pl:MathLine = pv.getMathLine();
+			var count:int = pList.length;
+			for (var i:int = 0; i < count; i++) 
+			{
+				if(i == 0){//第一个
+					var pp:Point = pList[pList.length - 1];
+					var np:Point = pList[0];
+				}else{
+					pp = pList[i - 1];
+					np = pList[i];
+				}
+				if(pv.startPoint.equals(pp) || pv.startPoint.equals(np) || 
+					pv.endPoint.equals(pp) || pv.endPoint.equals(np)){
+					continue;//不能是这条向量中的点
+				}
+				if(!pl.isSameSide(pp,np)){//说明不同侧
+					return MathVector.createByPoint(pp,np);//该向量和目标向量有交集
+				}
+			}
+			return null;
 		}
 		
 		private static function createMatrix(vList:Vector.<Vector3D>,

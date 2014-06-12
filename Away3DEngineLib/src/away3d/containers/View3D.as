@@ -125,23 +125,23 @@
 		
 		private function initRightClickMenu():void
 		{
-			_menu0 = new ContextMenuItem("Away3D.com\tv" + Away3D.MAJOR_VERSION +"." + Away3D.MINOR_VERSION +"."+ Away3D.REVISION, true, true, true);
-			_menu1 = new ContextMenuItem("View Source", true, true, true); 
-			_menu0.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, visitWebsite);
-			_menu1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, viewSource);
-			_ViewContextMenu = new ContextMenu();
-			
-			updateRightClickMenu();
+//			_menu0 = new ContextMenuItem("Away3D.com\tv" + Away3D.MAJOR_VERSION +"." + Away3D.MINOR_VERSION +"."+ Away3D.REVISION, true, true, true);
+//			_menu1 = new ContextMenuItem("View Source", true, true, true); 
+//			_menu0.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, visitWebsite);
+//			_menu1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, viewSource);
+//			_ViewContextMenu = new ContextMenu();
+//			
+//			updateRightClickMenu();
 		}
 		
 		private function updateRightClickMenu():void
 		{
-			if (_rightClickMenuEnabled)
-				_ViewContextMenu.customItems = _sourceURL? [_menu0, _menu1] : [_menu0];
-			else
-				_ViewContextMenu.customItems = [];
-			
-			contextMenu = _ViewContextMenu;
+//			if (_rightClickMenuEnabled)
+//				_ViewContextMenu.customItems = _sourceURL? [_menu0, _menu1] : [_menu0];
+//			else
+//				_ViewContextMenu.customItems = [];
+//			
+//			contextMenu = _ViewContextMenu;
 		}
 		
 		
