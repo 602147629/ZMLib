@@ -66,7 +66,14 @@ package com.utils
 			var r2:Number = getPointResult(p2.x,p2.y);
 			return r1 * r2 >= 0;//异测的符号不相等 积<0
 		}
-		
+		/**
+		 * 通过x值换算y值
+		 * @param x
+		 * @return 
+		 */		
+		public function getVauleByX(x:Number):Number{
+			return (-valueC - valueA * x) / valueB;
+		}
 		/**
 		 * 和另外一条直线的交叉点
 		 * @param ml
