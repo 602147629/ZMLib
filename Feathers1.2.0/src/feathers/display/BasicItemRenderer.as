@@ -37,6 +37,12 @@ package feathers.display
 		protected function removedFromStageHandler(event:Event):void
 		{
 			this.touchPointID = -1;
+			this.addEventListener(Event.ADDED_TO_STAGE, addToStageHandler);
+		}
+		
+		protected function addToStageHandler(event:Event):void
+		{
+			commitData();//默认恢复界面的时候刷新数据
 		}
 		
 		private static const HELPER_POINT:Point = new Point();
