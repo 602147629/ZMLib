@@ -13,6 +13,8 @@ package com.view
 
 	public class TipsAlert
 	{
+		public static var embedLocalFonts:Boolean = false;//默认不嵌入字体
+		
 		public function TipsAlert(){
 			
 		}
@@ -59,7 +61,7 @@ package com.view
 			var tf:TextFormat = tips.defaultTextFormat;
 			if(fontName != null){
 				tf.font = fontName;
-				tips.embedFonts = true;
+				tips.embedFonts = embedLocalFonts;
 			}else{
 				tf.font = null;
 				tips.embedFonts = false;
