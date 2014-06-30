@@ -10,6 +10,7 @@
 
 package starling.core
 {
+    import flash.display3D.Context3D;
     import flash.system.System;
     
     import starling.display.BlendMode;
@@ -17,8 +18,12 @@ package starling.core
     import starling.display.Sprite;
     import starling.events.EnterFrameEvent;
     import starling.events.Event;
+    import starling.events.Touch;
+    import starling.events.TouchEvent;
+    import starling.events.TouchPhase;
     import starling.text.BitmapFont;
     import starling.text.TextField;
+    import starling.text.TextFieldAutoSize;
     import starling.utils.HAlign;
     import starling.utils.VAlign;
     
@@ -41,11 +46,13 @@ package starling.core
         /** Creates a new Statistics Box. */
         public function StatsDisplay()
         {
-            mBackground = new Quad(50, 25, 0x0);
-            mTextField = new TextField(48, 25, "", BitmapFont.MINI, BitmapFont.NATIVE_SIZE, 0xffffff);
+            mBackground = new Quad(75, 45, 0x0);
+			mBackground.alpha = .6;
+            mTextField = new TextField(1, 1, "", BitmapFont.MINI, BitmapFont.NATIVE_SIZE, 0xffffff);
             mTextField.x = 2;
-            mTextField.hAlign = HAlign.LEFT;
-            mTextField.vAlign = VAlign.TOP;
+			mTextField.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
+//            mTextField.hAlign = HAlign.LEFT;
+//            mTextField.vAlign = VAlign.TOP;
             
             addChild(mBackground);
             addChild(mTextField);
@@ -53,9 +60,30 @@ package starling.core
             blendMode = BlendMode.NONE;
             
             addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			addEventListener(TouchEvent.TOUCH,onTouch);
             addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
         }
-        
+		
+		private var _drag_dx : Number;
+		private var _drag_dy : Number;
+		private function onTouch(e:TouchEvent) : void
+		{
+			var touch:Touch = e.getTouch(this);
+			if(touch != null){
+				if(touch.phase == TouchPhase.BEGAN){
+					_drag_dx = touch.globalX - this.x;
+					_drag_dy = touch.globalY - this.y;
+//					trace("点击位置:" + _drag_dx,_drag_dy);
+				}else if(touch.phase == TouchPhase.MOVED){
+					this.x = touch.globalX - _drag_dx;
+					this.y = touch.globalY - _drag_dy;
+				}else{
+					_drag_dx = 0;
+					_drag_dy = 0;
+				}
+			}
+		}
+		
         private function onAddedToStage():void
         {
             addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -79,16 +107,18 @@ package starling.core
                 mFrameCount = mTotalTime = 0;
             }
         }
-        
         /** Updates the displayed values. */
         public function update():void
         {
             mFps = mTotalTime > 0 ? mFrameCount / mTotalTime : 0;
             mMemory = System.totalMemory * 0.000000954; // 1.0 / (1024*1024) to convert to MB
             
-            mTextField.text = "FPS: " + mFps.toFixed(mFps < 100 ? 1 : 0) + 
-                            "\nMEM: " + mMemory.toFixed(mMemory < 100 ? 1 : 0) +
-                            "\nDRW: " + (mTotalTime > 0 ? mDrawCount-2 : mDrawCount); // ignore self 
+            mTextField.text = "FPS: " + mFps.toFixed(1) + "/" + Starling.framerate + 
+                            "\nMEM: " + mMemory.toFixed(mMemory < 100 ? 1 : 0) + " M" +
+                            "\nDRW: " + (mTotalTime > 0 ? mDrawCount-2 : mDrawCount) + // ignore self 
+                            "\nDRI: " + mContext.driverInfo; // ignore self 
+			mBackground.width = mTextField.width + 5;
+			mBackground.height = mTextField.height + 5;
         }
         
         public override function render(support:RenderSupport, parentAlpha:Number):void
@@ -101,6 +131,10 @@ package starling.core
             super.render(support, parentAlpha);
         }
         
+		private var _mContext:Context3D;
+		public function get mContext():Context3D{return _mContext;}
+		public function set mContext(value:Context3D):void{_mContext = value;}
+		
         /** The number of Stage3D draw calls per second. */
         public function get drawCount():int { return mDrawCount; }
         public function set drawCount(value:int):void { mDrawCount = value; }

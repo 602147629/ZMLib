@@ -158,6 +158,7 @@ package starling.core
         /** The key for the shader programs stored in 'contextData' */
         private static const PROGRAM_DATA_NAME:String = "Starling.programs"; 
         
+		public static var framerate:Number;//系统帧率
         // members
         
         private var mStage3D:Stage3D;
@@ -216,6 +217,8 @@ package starling.core
             if (viewPort == null) viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
             if (stage3D == null) stage3D = stage.stage3Ds[0];
             
+			if(isNaN(framerate))framerate = stage.frameRate;
+			
             makeCurrent();
             
             mRootClass = rootClass;
@@ -844,7 +847,8 @@ package starling.core
                 if (mStatsDisplay == null)
                 {
                     mStatsDisplay = new StatsDisplay();
-                    mStatsDisplay.touchable = false;
+//                    mStatsDisplay.touchable = false;
+					mStatsDisplay.mContext = mContext;
                     mStage.addChild(mStatsDisplay);
                 }
                 

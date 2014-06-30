@@ -1,0 +1,4 @@
+修改部分:
+1. starling.core::Starling 修改方法 showStatsAt():关于mStatsDisplay的初始化设置mContext
+2. starling.core::StatsDisplay 修改方法 update():关于DRI硬件信息显示
+3. starling.text::TextField 保留原来修改 增加关于字体的控制

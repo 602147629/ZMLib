@@ -122,7 +122,9 @@ package starling.text
 		}
         // this object will be used for text rendering
         private static var sNativeTextField:flash.text.TextField = new flash.text.TextField();
-        
+		
+		public static var embedLocalFonts:Boolean = false;//默认不嵌入字体
+		
         /** Create a new text field with the given properties. */
         public function TextField(width:int, height:int, text:String, fontName:String="",
                                   fontSize:Number=12, color:uint=0x0, bold:Boolean=false)
@@ -143,9 +145,8 @@ package starling.text
             addChild(mHitArea);
 			
 			if(_registerName != ""){
-				_embedFonts = true;//直接嵌入
+				_embedFonts = embedLocalFonts;//直接嵌入
 			}
-            
             addEventListener(Event.FLATTEN, onFlatten);
         }
         
