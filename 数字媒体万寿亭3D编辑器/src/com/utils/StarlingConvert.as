@@ -17,6 +17,7 @@ package com.utils
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.text.TextField;
@@ -63,6 +64,28 @@ package com.utils
 			labelText.vAlign = VAlign.CENTER;
 			labelText.hAlign = HAlign.CENTER;
 			return labelText;
+		}
+		
+		/**
+		 * 创建Starling输入框
+		 * @param w
+		 * @param h
+		 * @param fontSize
+		 * @param color
+		 * @param label
+		 * @return 
+		 */		
+		public static function createTextInput(w:Number,h:Number,fontSize:Number = 20,color:uint = 0x4d4d4d,
+				label:String = "",backgroundSkin:starling.display.DisplayObject = null):TextInput{
+			var labelInput:TextInput = new TextInput();
+			labelInput.textEditorProperties.fontSize = fontSize;
+			labelInput.textEditorProperties.color = color;
+			labelInput.textEditorProperties.vAlign = VAlign.CENTER;
+			labelInput.textEditorProperties.hAligh = HAlign.CENTER;
+			labelInput.width = w;
+			labelInput.height = h;
+			labelInput.backgroundSkin = backgroundSkin;
+			return labelInput;
 		}
 		
 		public static function createButton(label:String = null,w:Number = 80,h:Number = 30,fontSize:Number = 20,
@@ -120,7 +143,7 @@ package com.utils
 		 * @param mc
 		 * @return 
 		 */
-		public static function convertSp(dpo:DisplayObject,touchable:Boolean = true):Sprite{
+		public static function convertSp(dpo:flash.display.DisplayObject,touchable:Boolean = true):Sprite{
 			if(dpo.parent != null)dpo.parent.removeChild(dpo);
 			var image:Image = convertBmp(dpo,false);
 			var sp:Sprite = new Sprite();
@@ -138,7 +161,7 @@ package com.utils
 		 * @param dpo
 		 * @return 
 		 */		
-		public static function convertBmp(dpo:DisplayObject,touchable:Boolean = true):Image{
+		public static function convertBmp(dpo:flash.display.DisplayObject,touchable:Boolean = true):Image{
 			if(dpo.parent != null)dpo.parent.removeChild(dpo);
 			var vo:ImageVo = convertBmd(dpo);
 			var image:Image = new Image(vo.texture);

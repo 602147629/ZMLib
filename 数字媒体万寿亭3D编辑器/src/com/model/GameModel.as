@@ -142,7 +142,7 @@ package com.model
 		}
 		
 		private static var _mapRotationY:Vector.<Number>;// = new Vector.<Number>();
-		public static function setRotationY(area:int,rotationY):void{
+		public static function setRotationY(area:int,rotationY:Number):void{
 			initMapRotationY();
 			_mapRotationY[area] = rotationY;
 		}

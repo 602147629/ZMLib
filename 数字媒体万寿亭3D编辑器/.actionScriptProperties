@@ -45,7 +45,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="D:/桌面/ttt.p12" airTimestamp="false" anePathSet="true" version="1">
+      <airSettings airCertificatePath="D:/濡楀矂娼�ttt.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
         <newLaunchParams/>
@@ -57,3 +57,5 @@
     </buildTarget>
   </buildTargets>
 </actionScriptProperties>
+
+
