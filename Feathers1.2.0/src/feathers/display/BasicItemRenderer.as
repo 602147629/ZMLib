@@ -1,10 +1,10 @@
 package feathers.display
 {
-	import flash.geom.Point;
-	
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
+	
+	import flash.geom.Point;
 	
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -83,9 +83,12 @@ package feathers.display
 					touch.getLocation(this, HELPER_POINT);
 					//check if the touch is still over the target
 					//also, only change it if we're not selected. we're not a toggle.
-					if(this.hitTest(HELPER_POINT, true) != null && !this._isSelected)
+					if(this.hitTest(HELPER_POINT, true) != null)
 					{
-						this.isSelected = true;
+						touchEnd();
+						if(!this._isSelected){
+							this.isSelected = true;
+						}
 					}
 					return;
 				}
@@ -103,6 +106,9 @@ package feathers.display
 			}
 		}
 		
+		protected function touchEnd():void{
+			
+		}
 		
 		override protected function draw():void
 		{

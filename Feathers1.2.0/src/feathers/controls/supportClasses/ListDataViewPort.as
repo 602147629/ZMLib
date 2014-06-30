@@ -771,6 +771,10 @@ package feathers.controls.supportClasses
 			this._layoutItems.length = 0;
 		}
 
+		public function redraw():void{
+			draw();
+		}
+		
 		private function refreshRenderers():void
 		{
 			if(this._typicalItemRenderer && this._typicalItemIsInDataProvider)

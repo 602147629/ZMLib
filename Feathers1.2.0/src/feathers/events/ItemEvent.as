@@ -9,6 +9,7 @@ package feathers.events
 		public static const ITEM_OVER:String = 'ItemEvent.ITEM_OVER';
 		public static const ITEM_OUT:String = 'ItemEvent.ITEM_OUT';
 		public static const ITEM_CHANGE:String = 'ItemEvent.ITEM_CHANGE';
+		public static const ITEM_STAY:String = 'ItemEvent.ITEM_STAY';
 		
 		public var preItem:DisplayObject;//前一个被点中的条目视图
 		public var item:DisplayObject;//点中的条目视图

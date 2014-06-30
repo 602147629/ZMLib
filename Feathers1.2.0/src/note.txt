@@ -1,0 +1,7 @@
+修改部分:
+1. feathers.controls.supportClasses::ListDataViewPort 增加方法 redraw();
+2. feathers.controls::List 增加方法 redraw();
+3. 修改模块:BasicItemRenderer 增加模块 FadeItemRenderer,ZoomItemRenderer
+4. 修改模块:ItemEvent
+5. feathers.controls::ScreenNavigator 保留原先的修改
+6. feathers.controls::ScreenNavigatorItem 保留原先的修改

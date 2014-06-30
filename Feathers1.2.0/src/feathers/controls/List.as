@@ -7,9 +7,6 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.controls
 {
-	import flash.geom.Point;
-	import flash.ui.Keyboard;
-	
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.controls.supportClasses.ListDataViewPort;
@@ -19,6 +16,9 @@ package feathers.controls
 	import feathers.events.CollectionEventType;
 	import feathers.layout.ILayout;
 	import feathers.layout.VerticalLayout;
+	
+	import flash.geom.Point;
+	import flash.ui.Keyboard;
 	
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -1046,6 +1046,10 @@ package feathers.controls
 			return this.dataViewPort.getRendener(item);
 		}
 		
+		public function redraw():void
+		{
+			this.dataViewPort.redraw();
+		}
 		/**
 		 * @private
 		 */
